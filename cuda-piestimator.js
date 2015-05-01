@@ -10,7 +10,7 @@ class CUDAPiEstimatorJob extends ReactJob {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.setState({status: JOB_STATUS.IDLE, results: ''});
+        this.setState({status: JOB_STATUS.WAITING, percentComplete: 0, results: ''});
 
         var num_sims = React.findDOMNode(this.refs.num_sims).value.trim();
         if (! num_sims) {
@@ -28,19 +28,22 @@ class CUDAPiEstimatorJob extends ReactJob {
     }
 
     // Custom Job UI form + results display
-    render() { return (
+    render() {
+        var status = this.getStatusValue();
+        return (
         <div>
             CUDA Pi Estimator
             <form onSubmit={this.handleSubmit}>
                 <input type="text" placeholder="Number Simulations.. (enter a number)" ref="num_sims" />
                 <SubmitButton  value="Start" ref="submitButton"/>
             </form>
+            {/*  Progress bar, current Job ID and job status */}
             {this.state.percentComplete > 0 ? <Progress percentComplete={this.state.percentComplete} /> : ''}
-            {this.state.jobID.length ? <p>Job ID: {this.state.jobID}</p> : ''}
+            {this.state.jobID.length ? <p>Job ID: {this.state.jobID}  <em>{status}</em></p> : ''}
 
-            {/*  Display job parameters  */}
+            {/*  Job parameters user entered  */}
             {this.state.jobParameters != '' ? <Parameters parameters={this.state.jobParameters} /> : ''}
-            {/*  Render custom results component if job is finished  */}
+            {/*  Custom results component when job is finished  */}
             {(this.state.status === JOB_STATUS.FINISHED) ? <Results results={this.state.results} /> : ''}
 
         </div>

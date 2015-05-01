@@ -51,9 +51,10 @@ class SubmitButton extends React.Component {
  * Job status values
  */
 var JOB_STATUS = {
-    IDLE : {value: 0, name: "IDLE"},
-    WORKING : {value: 1, name: "WORKING"},
-    FINISHED : {value: 2, name: "FINISHED"}
+    IDLE : {value: 0, name: "Idle."},
+    WAITING : {value: 1, name: "Queued for Processing..."},
+    WORKING : {value: 2, name: "In Progress.."},
+    FINISHED : {value: 3, name: "Finished."}
 };
 
 /**
@@ -113,6 +114,23 @@ class ReactJob extends React.Component {
             this.eventSource.addEventListener("finish", this.serverFinish);
         }
     }
+    getStatusValue() {
+        var statusValue;
+        if (this.state.status === JOB_STATUS.IDLE) {
+            statusValue = JOB_STATUS.IDLE.name;
+        } else if (this.state.status === JOB_STATUS.WAITING) {
+            statusValue = JOB_STATUS.WAITING.name;
+        } else if (this.state.status === JOB_STATUS.WORKING) {
+            statusValue = JOB_STATUS.WORKING.name;
+        } else if (this.state.status === JOB_STATUS.FINISHED) {
+            statusValue = JOB_STATUS.FINISHED.name;
+        }
+        return statusValue;
+    }
+  /*  showProgress() {
+        this.state.percentComplete > 0 ? <Progress percentComplete={this.state.percentComplete} /> : ''
+    }*/
+
 }
 
 

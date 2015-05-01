@@ -41,3 +41,6 @@ and setup React Component:
 ```
 (There has to be an HTML element named react-job.)
 
+## License
+Copyright (c) 2015 Gravityneutral.com David Ison. Licensed under the MIT license.
+               

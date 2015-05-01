@@ -14,7 +14,7 @@ Parallel Computing and Web Server Integration Platform
 Cloned from github:
 
 ```bash
-npm login blah blah
+git clone https://github.com/dtison/gn-client-scripting.git
 ```
 
 ## Usage

@@ -56,10 +56,10 @@ class Results extends React.Component {
             <p>Elapsed time: {this.props.results.elapsed_time} ms</p>
             Execution Hardware Info
             <ul>
-                <li>Name: {this.props.results.hardware_details.name}</li>
+                <li>GPU: {this.props.results.hardware_details.name}</li>
                 <li>Cores: {this.props.results.hardware_details.cores}</li>
                 <li>Clock: {this.props.results.hardware_details.clock}</li>
-                <li># Streaming Multiprocessors: {this.props.results.hardware_details.streaming}</li>
+                <li>Streaming Multiprocessors: {this.props.results.hardware_details.streaming}</li>
             </ul>
 
         </div>
@@ -72,24 +72,25 @@ class Results extends React.Component {
 class Parameters extends React.Component {
     render() { return (
         <div>
-            Executing Job with Parameters
+            Job Parameters
             <ul>
-                <li># Sims: {this.props.parameters.num_sims}</li>
+                <li>Number sims: {this.props.parameters.num_sims}</li>
             </ul>
-
         </div>
     );}
 
 }
 
-
-//{this.state.jobParameters.length ? <p>Job ID: {this.state.jobID}</p> : ''}
-
-
 /*
-<p>{(this.state.status === JOB_STATUS.FINISHED) ? 'Elapsed Time: ' + this.state.results.elapsed_time + ' ms' : ''}</p>
-<p>{(this.state.status === JOB_STATUS.FINISHED) ? 'Pi was calculated as: ' + this.state.results.pi : ''}</p>
-*/
+    TODO's:
+    1.  If job waits for hardware to become available - display WAITING message
+    2.  Some kind of default timeout range in case we never get server push?  is an error condition.
+    3.  Synchronize all these reactjobs - nthroot and slowcompute to latest piest. version
+    4.  Safer UI for demo - dropdown select numbers instead of entering (too big #s)
+    5.  Think about a job Cancel button how would work - worker gets msg from gearman?
+    6.  For some reason server pushes for progress were getting confused with multiple jobs active.
+     - supposed to only send by job id.
+7.  why is 720 faster than 750?
 
-//data: "{"pi":"3.141592655815447","elapsed_time":"21731","…","cores":"192","clock":"0.797","streaming":"1"}}",
 
+ */

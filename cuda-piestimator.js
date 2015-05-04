@@ -19,7 +19,6 @@ class CUDAPiEstimatorJob extends ReactJob {
         // Submit job to server via rest url
         var url = 'http://quantum.dtison.net/job/cuda-piestimator/' + num_sims;
         $.ajax(url).done(function (data) {
-
             this.setState({jobID: data.id, jobParameters: {num_sims: num_sims}});
             // Final visual stuff..
             React.findDOMNode(this.refs.num_sims).value = '';
@@ -29,6 +28,7 @@ class CUDAPiEstimatorJob extends ReactJob {
 
     // Custom Job UI form + results display
     render() {
+        // Get Job Status string
         var status = this.getStatusValue();
         return (
         <div>
@@ -45,13 +45,11 @@ class CUDAPiEstimatorJob extends ReactJob {
             {this.state.jobParameters != '' ? <Parameters parameters={this.state.jobParameters} /> : ''}
             {/*  Custom results component when job is finished  */}
             {(this.state.status === JOB_STATUS.FINISHED) ? <Results results={this.state.results} /> : ''}
-
         </div>
     );}
 }
 
 /*  Custom results  component  */
-
 class Results extends React.Component {
     render() { return (
         <div>
@@ -71,7 +69,6 @@ class Results extends React.Component {
 
 
 /*  Custom job parameters  component  */
-
 class Parameters extends React.Component {
     render() { return (
         <div>
@@ -83,17 +80,3 @@ class Parameters extends React.Component {
     );}
 
 }
-
-/*
-    TODO's:
-    1.  If job waits for hardware to become available - display WAITING message
-    2.  Some kind of default timeout range in case we never get server push?  is an error condition.
-    3.  Synchronize all these reactjobs - nthroot and slowcompute to latest piest. version
-    4.  Safer UI for demo - dropdown select numbers instead of entering (too big #s)
-    5.  Think about a job Cancel button how would work - worker gets msg from gearman?
-    6.  For some reason server pushes for progress were getting confused with multiple jobs active.
-     - supposed to only send by job id.
-7.  why is 720 faster than 750?
-
-
- */

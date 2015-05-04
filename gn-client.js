@@ -54,7 +54,8 @@ var JOB_STATUS = {
     IDLE : {value: 0, name: "Idle."},
     WAITING : {value: 1, name: "Queued for Processing..."},
     WORKING : {value: 2, name: "In Progress.."},
-    FINISHED : {value: 3, name: "Finished."}
+    FINISHED : {value: 3, name: "Finished."},
+    ERROR : {value: 4, name: "Error."}
 };
 
 /**
@@ -127,6 +128,14 @@ class ReactJob extends React.Component {
         }
         return statusValue;
     }
+    // If we get here - must have been a timeout or error sending progress
+    timeoutJob() {
+        if (this.state.status === JOB_STATUS.WAITING) {
+            this.setState({status: JOB_STATUS.ERROR});
+        }
+
+    }
+
   /*  showProgress() {
         this.state.percentComplete > 0 ? <Progress percentComplete={this.state.percentComplete} /> : ''
     }*/

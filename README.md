@@ -19,7 +19,18 @@ git clone https://github.com/dtison/gn-client-scripting.git
 
 ## Usage
 
-In the header, include scripts:
+In your page header, include scripts:
+
+Load React 
+(***for development you can use the JSX Transformer - 
+for production you will need to pre-compile using webpack)
+
+```javascript
+    <script src="http://fb.me/react-0.13.2.js"></script>
+    <script src="http://fb.me/JSXTransformer-0.13.2.js"></script>
+```
+
+Load Gravity Neutral components
 
 ```javascript
 <script type="text/jsx;harmony=true" src="/js/gn-client.js"></script>

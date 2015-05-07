@@ -47,6 +47,7 @@ class CUDAPiEstimatorJob extends ReactJob {
             {/*  Progress bar, current Job ID and job status */}
             {this.state.percentComplete > 0 ? <Progress percentComplete={this.state.percentComplete} /> : ''}
             {this.state.jobID.length ? <p>Job ID: {this.state.jobID}  <em>{status}</em></p> : ''}
+            {this.state.errorMessage.length ? <p>Error Message: {this.state.errorMessage}</p>  : ''}
 
             {/*  Job parameters user entered  */}
             {this.state.jobParameters != '' ? <Parameters parameters={this.state.jobParameters} /> : ''}

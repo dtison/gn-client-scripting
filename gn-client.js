@@ -81,6 +81,7 @@ class ReactJob extends React.Component {
         this.manageEventSource  = this.manageEventSource.bind(this);
         this.serverPercent      = this.serverPercent.bind(this);
         this.serverFinish       = this.serverFinish.bind(this);
+        this.serverError       = this.serverError.bind(this);
 
     }
     // Called on initial render of the application

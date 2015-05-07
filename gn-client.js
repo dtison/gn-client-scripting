@@ -72,6 +72,7 @@ class ReactJob extends React.Component {
             jobParameters: '',
             percentComplete: 0,
             results: '',
+            errorMessage: '',
             isServerConnected: false
         };
         //  Class variables
@@ -88,6 +89,19 @@ class ReactJob extends React.Component {
     }
     componentDidUpdate() {
         this.manageEventSource(this.state.jobID);
+    }
+    finalizeJob() {
+        this.eventSource.close();
+        // Assumes subclass has SubmitButton component and set ref=submitButton
+        this.refs.submitButton.setState({disabled: false});
+        this.setState({jobId: '', percentComplete: 0, isServerConnected: false});
+    }
+    // SSE Listener / Job Error (termination)
+    serverError(event) {
+        console.log('ERROR:EVENT::', event);
+        var data = JSON.parse(event.data);
+        this.finalizeJob();
+        this.setState({status: JOB_STATUS.ERROR, errorMessage: data});
     }
     // SSE Listener / Job Received
     serverJobReceived(event) {
@@ -120,6 +134,8 @@ class ReactJob extends React.Component {
             this.eventSource.addEventListener("received", this.serverJobReceived);
             this.eventSource.addEventListener("progress", this.serverPercent);
             this.eventSource.addEventListener("finish", this.serverFinish);
+            this.eventSource.addEventListener("error", this.serverError);
+            // 1 more ?  canceled
         }
     }
     getStatusValue() {

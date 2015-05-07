@@ -90,18 +90,19 @@ class ReactJob extends React.Component {
     componentDidUpdate() {
         this.manageEventSource(this.state.jobID);
     }
-    finalizeJob() {
+    //  Closes down SSE connection, and resets some job parameters (for next run)
+    closeJob() {
         this.eventSource.close();
-        // Assumes subclass has SubmitButton component and set ref=submitButton
+        this.setState({jobId: '',  isServerConnected: false});
+        // Re-activate UI, assumes subclass has SubmitButton component and set ref=submitButton
         this.refs.submitButton.setState({disabled: false});
-        this.setState({jobId: '', percentComplete: 0, isServerConnected: false});
     }
     // SSE Listener / Job Error (termination)
     serverError(event) {
         console.log('ERROR:EVENT::', event);
         var data = JSON.parse(event.data);
-        this.finalizeJob();
-        this.setState({status: JOB_STATUS.ERROR, errorMessage: data});
+        this.closeJob();
+        this.setState({status: JOB_STATUS.ERROR, percentComplete: 0, errorMessage: data});
     }
     // SSE Listener / Job Received
     serverJobReceived(event) {
@@ -119,11 +120,14 @@ class ReactJob extends React.Component {
     serverFinish(event) {
         console.log('RESULTS:EVENT::', event);
         var data = JSON.parse(event.data);
-        this.setState({jobId: '', results: data, percentComplete: 100, isServerConnected: false});
-        this.eventSource.close();
-        this.setState({status: JOB_STATUS.FINISHED});
+        this.closeJob();
+        this.setState({status: JOB_STATUS.FINISHED, percentComplete: 100, results: data});
+
+//        this.setState({jobId: '', results: data, percentComplete: 100, isServerConnected: false});
+   //     this.eventSource.close();
+    //    this.setState({status: JOB_STATUS.FINISHED});
         // Assumes subclass has SubmitButton component and set ref=submitButton
-        this.refs.submitButton.setState({disabled: false})
+  //      this.refs.submitButton.setState({disabled: false})
     }
     manageEventSource(jobID) {
         if (! this.state.isServerConnected && this.state.jobID.length > 0) {

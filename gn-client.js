@@ -89,6 +89,12 @@ class ReactJob extends React.Component {
     componentDidUpdate() {
         this.manageEventSource(this.state.jobID);
     }
+    // SSE Listener / Job Received
+    serverJobReceived(event) {
+        var data = JSON.parse(event.data);
+        console.log('JOBRECEIVED:EVENT::% = ', data);
+        this.setState({percentComplete: 0.000000001, status: JOB_STATUS.WAITING});
+    }
     // SSE Listener / Job Progress
     serverPercent(event) {
         var data = JSON.parse(event.data);
@@ -111,6 +117,7 @@ class ReactJob extends React.Component {
             this.eventSource = new EventSource(url);
             this.setState({isServerConnected: true});
             // SSE Listener setup
+            this.eventSource.addEventListener("received", this.serverJobReceived);
             this.eventSource.addEventListener("progress", this.serverPercent);
             this.eventSource.addEventListener("finish", this.serverFinish);
         }

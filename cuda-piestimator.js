@@ -34,7 +34,14 @@ class CUDAPiEstimatorJob extends ReactJob {
         <div>
             CUDA Pi Estimator
             <form onSubmit={this.handleSubmit}>
-                <input type="text" placeholder="Number Simulations.. (enter a number)" ref="num_sims" />
+                <select name="Number Simulations" defaultValue=""  ref="num_sims">
+                    <option value=""> - Choose # Simulations -</option>
+                    <option value="10000">10000 (Fast)</option>
+                    <option value="100000">100000 (More accurate)</option>
+                    <option value="1000000">1000000 </option>
+                    <option value="110000000">10000000 </option>
+                    <option value="1000000000">1000000000 (Slowest most accurate)</option>
+                </select>
                 <SubmitButton  value="Start" ref="submitButton"/>
             </form>
             {/*  Progress bar, current Job ID and job status */}
@@ -48,6 +55,13 @@ class CUDAPiEstimatorJob extends ReactJob {
         </div>
     );}
 }
+
+/*<input type="text" placeholder="Number Simulations.. (enter a number)" ref="num_sims" />*/
+
+
+
+
+
 
 /*  Custom results  component  */
 class Results extends React.Component {

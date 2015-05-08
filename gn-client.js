@@ -81,7 +81,8 @@ class ReactJob extends React.Component {
         this.manageEventSource  = this.manageEventSource.bind(this);
         this.serverPercent      = this.serverPercent.bind(this);
         this.serverFinish       = this.serverFinish.bind(this);
-        this.serverError       = this.serverError.bind(this);
+        this.serverError        = this.serverError.bind(this);
+        this.serverJobReceived  = this.serverJobReceived.bind(this);
 
     }
     // Called on initial render of the application
@@ -94,7 +95,7 @@ class ReactJob extends React.Component {
     //  Closes down SSE connection, and resets some job parameters (for next run)
     closeJob() {
         this.eventSource.close();
-        this.setState({jobId: '',  isServerConnected: false});
+        this.setState({jobID: '',  isServerConnected: false});
         // Re-activate UI, assumes subclass has SubmitButton component and set ref=submitButton
         this.refs.submitButton.setState({disabled: false});
     }
@@ -119,19 +120,15 @@ class ReactJob extends React.Component {
     }
     // SSE Listener / Job Results
     serverFinish(event) {
-        console.log('RESULTS:EVENT::', event);
+        console.log('FINISH:EVENT::', event);
         var data = JSON.parse(event.data);
         this.closeJob();
         this.setState({status: JOB_STATUS.FINISHED, percentComplete: 100, results: data});
-
-//        this.setState({jobId: '', results: data, percentComplete: 100, isServerConnected: false});
-   //     this.eventSource.close();
-    //    this.setState({status: JOB_STATUS.FINISHED});
-        // Assumes subclass has SubmitButton component and set ref=submitButton
-  //      this.refs.submitButton.setState({disabled: false})
     }
     manageEventSource(jobID) {
         if (! this.state.isServerConnected && this.state.jobID.length > 0) {
+            console.log('manageEventSource - JobID is now ', this.state.jobID);
+
             var url = "http://quantum.dtison.net/sse/?jobID=" + this.state.jobID;
             this.eventSource = new EventSource(url);
             this.setState({isServerConnected: true});

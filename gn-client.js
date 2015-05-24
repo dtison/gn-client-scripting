@@ -79,7 +79,7 @@ class ReactJob extends React.Component {
         this.eventSource = '';
         //  Setup bindings
         this.manageEventSource  = this.manageEventSource.bind(this);
-        this.serverPercent      = this.serverPercent.bind(this);
+        this.serverProgress     = this.serverProgress.bind(this);
         this.serverFinish       = this.serverFinish.bind(this);
         this.serverError        = this.serverError.bind(this);
         this.serverJobReceived  = this.serverJobReceived.bind(this);
@@ -94,6 +94,7 @@ class ReactJob extends React.Component {
     }
     //  Closes down SSE connection, and resets some job parameters (for next run)
     closeJob() {
+        console.log('Calling this.eventSource.close()');
         this.eventSource.close();
         this.setState({jobID: '',  isServerConnected: false});
         // Re-activate UI, assumes subclass has SubmitButton component and set ref=submitButton
@@ -113,7 +114,7 @@ class ReactJob extends React.Component {
         this.setState({percentComplete: 0.000000001, status: JOB_STATUS.WAITING});
     }
     // SSE Listener / Job Progress
-    serverPercent(event) {
+    serverProgress(event) {
         var data = JSON.parse(event.data);
         console.log('PROGRESS:EVENT::% = ', data);
         this.setState({percentComplete: data * 100, status: JOB_STATUS.WORKING});
@@ -134,7 +135,7 @@ class ReactJob extends React.Component {
             this.setState({isServerConnected: true});
             // SSE Listener setup
             this.eventSource.addEventListener("received", this.serverJobReceived);
-            this.eventSource.addEventListener("progress", this.serverPercent);
+            this.eventSource.addEventListener("progress", this.serverProgress);
             this.eventSource.addEventListener("finish", this.serverFinish);
             this.eventSource.addEventListener("error", this.serverError);
             // 1 more ?  canceled

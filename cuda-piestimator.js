@@ -7,7 +7,6 @@ class CUDAPiEstimatorJob extends ReactJob {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
     handleSubmit(e) {
         e.preventDefault();
         this.setState({status: JOB_STATUS.WAITING, percentComplete: 0, results: ''});
@@ -19,7 +18,8 @@ class CUDAPiEstimatorJob extends ReactJob {
         // Submit job to server via rest url
         var url = 'http://quantum.dtison.net/job/cuda-piestimator/' + num_sims;
         $.ajax(url).done(function (data) {
-            this.setState({jobID: data.id, jobParameters: {num_sims: num_sims}});
+            this.setState({jobID: data.id, port: data.port, jobParameters: {num_sims: num_sims}});
+   console.log ("Setting port ", data.port);
             // Final visual stuff..
             React.findDOMNode(this.refs.num_sims).value = '';
             this.refs.submitButton.setState({disabled: true})

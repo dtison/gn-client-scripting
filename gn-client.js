@@ -69,6 +69,7 @@ class ReactJob extends React.Component {
         this.state =  {
             status: JOB_STATUS.IDLE,
             jobID: '',
+            port: '',
             jobParameters: '',
             percentComplete: 0,
             results: '',
@@ -129,8 +130,8 @@ class ReactJob extends React.Component {
     manageEventSource(jobID) {
         if (! this.state.isServerConnected && this.state.jobID.length > 0) {
             console.log('manageEventSource - JobID is now ', this.state.jobID);
-
-            var url = "http://quantum.dtison.net/sse/?jobID=" + this.state.jobID;
+//  TODO:  Is  - jobID still needed here?  For anything else?
+            var url = "http://quantum.dtison.net/sse/?jobID=" + this.state.jobID + "&port=" + this.state.port;
             this.eventSource = new EventSource(url);
             this.setState({isServerConnected: true});
             // SSE Listener setup
